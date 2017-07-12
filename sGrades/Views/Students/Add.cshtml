@@ -1,0 +1,41 @@
+﻿@model sGrades.Models.Student
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add New Students</h2>
+
+<div><br /></div>
+
+@using (Html.BeginForm("Add", "Students"))
+{
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(s => s.Id)
+        @Html.TextBoxFor(s => s.Id, new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.Id)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(s => s.FName)
+        @Html.TextBoxFor(s => s.FName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.FName)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(s => s.LName)
+        @Html.TextBoxFor(s => s.LName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(s => s.LName)
+    </div>
+
+    @Html.AntiForgeryToken();
+    <button type="submit" class="btn btn-primary">Add</button>
+}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}

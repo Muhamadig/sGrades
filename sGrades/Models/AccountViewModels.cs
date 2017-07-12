@@ -49,9 +49,8 @@ namespace sGrades.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "User Name - ID")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -70,6 +69,13 @@ namespace sGrades.Models
         public string Email { get; set; }
 
         [Required]
+        [Display(Name ="User Name - ID")]
+        [MaxLength(9,ErrorMessage = "The ID must be 9 numbers length")]
+        [MinLength(9,ErrorMessage = "The ID must be 9 numbers length")]
+        
+        public string UserName { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -79,6 +85,10 @@ namespace sGrades.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "User Role")]
+        public string UserRoles { get; set; }
     }
 
     public class ResetPasswordViewModel

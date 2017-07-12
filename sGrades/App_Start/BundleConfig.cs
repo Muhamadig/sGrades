@@ -24,7 +24,8 @@ namespace sGrades
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/flately_bootstrap.css",
+                      "~/Content/my_css.css",
                       "~/Content/site.css"));
         }
     }

@@ -191,18 +191,57 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707111959197_initialMigration.cs" />
+    <Compile Include="Migrations\201707111959197_initialMigration.Designer.cs">
+      <DependentUpon>201707111959197_initialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707120107260_AddStudentEnroll.cs" />
+    <Compile Include="Migrations\201707120107260_AddStudentEnroll.Designer.cs">
+      <DependentUpon>201707120107260_AddStudentEnroll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707120113152_AddStudentEnroll1.cs" />
+    <Compile Include="Migrations\201707120113152_AddStudentEnroll1.Designer.cs">
+      <DependentUpon>201707120113152_AddStudentEnroll1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707120133316_AddStudentEnroll2.cs" />
+    <Compile Include="Migrations\201707120133316_AddStudentEnroll2.Designer.cs">
+      <DependentUpon>201707120133316_AddStudentEnroll2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707120155463_toupdate.cs" />
+    <Compile Include="Migrations\201707120155463_toupdate.Designer.cs">
+      <DependentUpon>201707120155463_toupdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707120317228_FixLecurerId.cs" />
+    <Compile Include="Migrations\201707120317228_FixLecurerId.Designer.cs">
+      <DependentUpon>201707120317228_FixLecurerId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707121840013_ChangeStudentKey.cs" />
+    <Compile Include="Migrations\201707121840013_ChangeStudentKey.Designer.cs">
+      <DependentUpon>201707121840013_ChangeStudentKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707121842128_ChangeStudentKey1.cs" />
+    <Compile Include="Migrations\201707121842128_ChangeStudentKey1.Designer.cs">
+      <DependentUpon>201707121842128_ChangeStudentKey1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\StudentEnroll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\StudentsViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\flately_bootstrap.css" />
+    <Content Include="Content\my_css.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -257,6 +296,8 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Students\Index.cshtml" />
+    <Content Include="Views\Students\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -275,6 +316,32 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201707111959197_initialMigration.resx">
+      <DependentUpon>201707111959197_initialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707120107260_AddStudentEnroll.resx">
+      <DependentUpon>201707120107260_AddStudentEnroll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707120113152_AddStudentEnroll1.resx">
+      <DependentUpon>201707120113152_AddStudentEnroll1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707120133316_AddStudentEnroll2.resx">
+      <DependentUpon>201707120133316_AddStudentEnroll2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707120155463_toupdate.resx">
+      <DependentUpon>201707120155463_toupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707120317228_FixLecurerId.resx">
+      <DependentUpon>201707120317228_FixLecurerId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707121840013_ChangeStudentKey.resx">
+      <DependentUpon>201707121840013_ChangeStudentKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707121842128_ChangeStudentKey1.resx">
+      <DependentUpon>201707121842128_ChangeStudentKey1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

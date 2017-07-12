@@ -4,4 +4,20 @@
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<p>
+    This web application was developed by :
+    <ul>
+        <li>
+            Muhamad Igbaria
+        </li>
+        <li>
+            Maroun Moalim
+        </li>
+    </ul>
+
+    as final project of  "Advanced web technology" course at Ort-Brude college. 
+</p>
+
+<p>Lecturer: @User.IsInRole("Lecturer")</p>
+<p>Student: @User.IsInRole("Student")</p>
+

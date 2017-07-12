@@ -1,0 +1,44 @@
+﻿@model IEnumerable<sGrades.Models.Student>
+@{
+    ViewBag.Title = "Your Students";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All Your Students</h2>
+<div><br /></div>
+
+
+
+<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Add", "Students")'">ADD STUDENTS</button>
+<div><br /></div>
+
+
+
+@if (!Model.Any())
+{
+    <h3>No Students was found</h3>
+
+}
+
+else
+{
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var student in Model)
+            {
+                <tr>
+                    <td>@student.Id</td>
+                    <td>@student.FName @student.LName</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
