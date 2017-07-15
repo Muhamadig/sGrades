@@ -35,20 +35,26 @@ namespace sGrades.Controllers
         public ActionResult Index()
         {
 
-            var currUserName = GetUserName();
-            if (string.IsNullOrEmpty(currUserName))
-            {
-                return HttpNotFound();
-            }
-
-            var students = _context.Students.Where(u => u.LecturerId.Equals(currUserName)).ToList();
-
-            return View(students);
+            
+            return View();
         }
 
         public ActionResult Add()
         {
             return View();
+        }
+
+        public ActionResult Edit(string id)
+        {
+
+            //var currUserNAme = GetUserName();
+            //var student = _context.Students.Where(s => s.LecturerId.Equals(currUserNAme)).SingleOrDefault(s => s.Id.Equals(id));
+            //if (student == null)
+            //{
+            //    return HttpNotFound();
+            //}
+
+            return View("Edit",model:id);
         }
     }
 }

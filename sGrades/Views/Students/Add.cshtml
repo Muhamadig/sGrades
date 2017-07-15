@@ -1,41 +1,103 @@
-﻿@model sGrades.Models.Student
+﻿@model dynamic
 @{
-    ViewBag.Title = "Add";
+    ViewBag.Title = "Add New Students";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Add New Students</h2>
+<h3>You can add multiple students. </h3>
+<div class="row">
+    <form id="newStudent">
+        <div class="col-md-5 col-sm-5">
+            <div class="form-group">
+                <label>Student ID</label>
+                <input id="id" name="id" required data-rule-validStudentIdLength="true" data-rule-validStudentIdDigit="true" type="text" value="" class="form-control" />
+            </div>
 
-<div><br /></div>
+            <div class="form-group">
+                <label>First Name</label>
+                <input id="fName" name="fName" required type="text" value="" class="form-control" />
+            </div>
 
-@using (Html.BeginForm("Add", "Students"))
-{
+            <div class="form-group">
+                <label>Last Name</label>
+                <input id="lName" name="lName" required type="text" value="" class="form-control" />
+            </div>
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <button class="btn btn-primary" id="btn">Add</button> 
+           
 
-    <div class="form-group">
-        @Html.LabelFor(s => s.Id)
-        @Html.TextBoxFor(s => s.Id, new { @class = "form-control" })
-        @Html.ValidationMessageFor(s => s.Id)
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(s => s.FName)
-        @Html.TextBoxFor(s => s.FName, new { @class = "form-control" })
-        @Html.ValidationMessageFor(s => s.FName)
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(s => s.LName)
-        @Html.TextBoxFor(s => s.LName, new { @class = "form-control" })
-        @Html.ValidationMessageFor(s => s.LName)
-    </div>
+        </div>
 
-    @Html.AntiForgeryToken();
-    <button type="submit" class="btn btn-primary">Add</button>
-}
+        <div class="col-md-4 col-sm-4">
+            <div class="row">
+                <ul id="students" class="list-group"></ul>
+                
+            </div>
+        </div>
+    </form>
+</div>
+
 
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
+
+    
+    <script>
+
+        $(document).ready(function () {
+            var vm = {};
+
+
+
+            $.validator.addMethod("validStudentIdDigit", function () {
+                return $('#id').val().match(/^\d+$/);
+            }, "The id contains just digits.");
+
+
+            $.validator.addMethod("validStudentIdLength", function () {
+                return $('#id').val().length == 9 ;
+            }, "The id length is 9 digits.");
+
+
+            $("#newStudent").validate({
+                submitHandler: function () {
+                   
+
+                    vm.id = $('#id').val();
+                    vm.fName = $('#fName').val();
+                    vm.lName = $('#lName').val();
+
+
+                    $.ajax({
+                        url: "/api/students",
+                        method: "post",
+                        data: vm
+                    })
+                        .done(function () {
+                            toastr.success(vm.fName + " " + vm.lName + " Successfully added.","Added");
+
+                            $("#students").append("<li class='list-group-item list-group-item-success'>" + vm.id + " - " + vm.fName + " " + vm.lName + "</li>");
+
+                            $("#id").val("");
+                            $("#fName").val("");
+                            $("#lName").val("");
+
+                          
+                           
+                            $("#btn").focus();
+                        })
+                        .fail(function (e, s, message) {
+
+
+                            toastr.error(message, "Error");
+                        });
+                    return false;
+                }
+            });
+        });
+    </script>
 }

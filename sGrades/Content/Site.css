@@ -35,3 +35,10 @@ textarea {
     color: red;
     font-weight: bold;
 }
+.error {
+    color: red;
+}
+
+.form-control.error {
+    border: 1px solid red;
+}

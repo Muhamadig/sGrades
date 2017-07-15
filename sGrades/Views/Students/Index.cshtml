@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<sGrades.Models.Student>
 @{
-    ViewBag.Title = "Your Students";
+    ViewBag.Title = "My Students";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>All Your Students</h2>
+<h2>My Students</h2>
 <div><br /></div>
 
 
@@ -12,33 +12,87 @@
 <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Add", "Students")'">ADD STUDENTS</button>
 <div><br /></div>
 
+<table id="students" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Student ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            var table = $("#students").DataTable({
+
+                responsive: true,
+                ajax: {
+                    url: "/api/students",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+
+                        data: "id",
+                        //render: function (data, type, student) {
+                        //    return "<a href='/students/New/" + student.id + "'>" + student.id + "</a>";
+                        //}
+                    },
+                    {
+                        data:"fName"
+                    },
+                    {
+                        data:"lName"
+                    },
+                    {
+
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-student-id=" + data + ">Delete Student</button>";
+                        }
+                    },
+                    {
+
+                        data: "id",
+                        render: function (data, type, student) {
+                            return "<a href='/students/Edit/" + data + "'>" + "Edit Student" + "</a>";
+                        }
+                        
+                    }
+                ]
+
+            });
 
 
-@if (!Model.Any())
-{
-    <h3>No Students was found</h3>
 
-}
 
-else
-{
+            $("#students").on("click", ".js-delete",function () {
 
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var student in Model)
-            {
-                <tr>
-                    <td>@student.Id</td>
-                    <td>@student.FName @student.LName</td>
-                </tr>
-            }
+                var button = $(this);
+                bootbox.confirm("Are you sure you want delete this student?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/students/" + button.attr("data-student-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
 
-        </tbody>
-    </table>
+            });
+        });
+    </script>
+
+        
 }

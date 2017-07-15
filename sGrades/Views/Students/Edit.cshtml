@@ -1,0 +1,79 @@
+﻿@model string
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Student Name</h2>
+
+
+<div class="row">
+    <form id="editStudent">
+        <div class="col-md-5 col-sm-5">
+            <div class="form-group">
+                <label>Student ID</label>
+                <input id="id" name="id" readonly required data-rule-validStudentIdLength="true" data-rule-validStudentIdDigit="true" type="text" value=@Model class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>First Name</label>
+                <input id="fName" name="fName" required type="text" value="" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Last Name</label>
+                <input id="lName" name="lName" required type="text" value="" class="form-control" />
+            </div>
+
+            <button class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(document).ready(function () {
+            var id = $("#id").val();
+            $.ajax({
+                url: "/api/students/"+ id,
+                method: "get",
+                success: function (student, status, xhr) {
+                    $("#fName").val(student.fName);
+                    $("#lName").val(student.lName);
+
+                }
+            })
+
+            $("#editStudent").validate({
+                submitHandler: function () {
+
+                    var vm = {};
+                    vm.id = $('#id').val();
+                    vm.fName = $('#fName').val();
+                    vm.lName = $('#lName').val();
+
+
+                    $.ajax({
+                        url: "/api/students/" + id,
+                        method: "put",
+                        data: vm
+                    })
+                        .done(function () {
+                            toastr.success(vm.fName + " " + vm.lName + " Successfully Change.", "Changes Saved");
+
+                            location = "/students/index";
+                        })
+                        .fail(function (e, s, message) {
+
+
+                            toastr.error(message, "Error");
+                        });
+                    return false;
+                }
+            });
+        });
+    </script>
+}
