@@ -24,5 +24,10 @@ namespace sGrades.Controllers
         {
             return View("Edit",model:Id);
         }
+        public ActionResult Details(int Id)
+        {
+            return View("Details", model: Id);
+        }
+
     }
 }

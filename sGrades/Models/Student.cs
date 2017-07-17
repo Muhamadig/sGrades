@@ -33,6 +33,6 @@ namespace sGrades.Models
         [Display(Name = "Last Name")]
         public string LName { get; set; }
 
-       
+        
     }
 }

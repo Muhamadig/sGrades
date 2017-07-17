@@ -107,7 +107,17 @@ namespace sGrades.Controllers.Api
                 throw new HttpResponseException(HttpStatusCode.NotFound);
 
             }
+            bool isExist = _context.Courses.Where(c => c.LecturerId.Equals(currUserName)).
+                 Any(c => c.Name.Equals(courseDto.Name) && c.Year == courseDto.Year && c.Semester.Equals(courseDto.Semester));
 
+            if (isExist)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    ReasonPhrase = "Can't update,this Course Already Exist"
+
+                });
+            }
             var originalId = courseInDb.Id;
             Mapper.Map(courseDto, courseInDb);
             courseInDb.Id = originalId;

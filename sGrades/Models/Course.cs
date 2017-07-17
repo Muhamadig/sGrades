@@ -38,5 +38,7 @@ namespace sGrades.Models
         [StringLength(9)]
         [Index("IX_Course", 4,IsUnique=true)]
         public string LecturerId { get; set; }
+
+       
     }
 }

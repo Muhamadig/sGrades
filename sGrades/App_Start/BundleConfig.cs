@@ -16,7 +16,8 @@ namespace sGrades
                         "~/Scripts/datatables/jquery.datatables.js",
                         "~/Scripts/datatables/datatables.bootstrap.js",
                         "~/Scripts/datatables/datatables.responsive.js",
-                        "~/Scripts/toastr.js"
+                        "~/Scripts/toastr.js",
+                        "~/Scripts/typeahead.bundle.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -33,7 +34,9 @@ namespace sGrades
                       "~/Content/datatables/css/responsive.datatables.css",
                       "~/Content/toastr.css",
                       "~/Content/my_css.css",
-                      "~/Content/site.css"));
+                      "~/Content/typeahead.css",
+                      "~/Content/site.css"
+                      ));
         }
     }
 }

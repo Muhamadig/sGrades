@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sGrades.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,5 +22,6 @@ namespace sGrades.Dtos
 
         
         public string Semester { get; set; }
+
     }
 }

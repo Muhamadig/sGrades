@@ -22,6 +22,7 @@ namespace sGrades.Models
     {
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
+       
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

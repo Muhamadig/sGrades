@@ -39,7 +39,7 @@
                         data: "name",
                         render: function (data, type, course) {
                             var viewName = course.name;
-                            return "<button title='Enter Course' class='btn-link  js-view' data-course-id=" + course.id + ">" + course.name+"</button>";
+                            return "<button title='Enter Course' class='btn-link  js-details' data-course-id=" + course.id + ">" + course.name+"</button>";
                                 
                         }
                     },
@@ -65,6 +65,11 @@
             $("#courses").on("click", ".js-edit", function () {
                 var button = $(this);
                 location = "/courses/edit/" + button.attr("data-course-id");
+            });
+
+            $("#courses").on("click", ".js-details", function () {
+                var button = $(this);
+                location = "/courses/Details/" + button.attr("data-course-id");
             });
 
 

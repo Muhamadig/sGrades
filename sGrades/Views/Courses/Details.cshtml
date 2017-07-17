@@ -1,0 +1,169 @@
+﻿@model int
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 id="courseName"></h2>
+<hr />
+
+
+<div>
+    <button id="enrollBtn" class="btn btn-primary " > <span id="toggle" class='glyphicon glyphicon-arrow-down'></span>   Enroll Students to Course</button>
+    
+    <div  id="enrollDiv" class="row">
+        <div><br /></div>
+        <form id="enrollStudent">
+            
+
+            <div class="form-group col-xs-12 col-md-3">
+                <label>Student ID</label>
+                <div class="tt-container">
+                    <input id="stdId" name="stdId" required data-rule-validStudentIdLength="true" data-rule-validStudentIdDigit="true" type="text" value="" class="form-control" />
+
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-3">
+                <label>First Name</label>
+                <div class="tt-container">
+                    <input readonly id="fName" name="fName" required type="text" value="" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-3">
+                <label>Last Name</label>
+                <div class="tt-container">
+                    <input readonly id="lName" name="lName" required type="text" value="" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group col-xs-5 col-md-3">
+                <label>&nbsp;</label>
+                <button class="btn btn-primary form-control" id="submit-student-btn">Enroll</button>
+            </div>
+          
+
+        </form>
+
+    </div>
+</div>
+<hr />
+<div>
+    <button id="assignmentBtn" class="btn btn-primary "> <span id="assignmentToggle" class='glyphicon glyphicon-arrow-down'></span>   Add New Assignment</button>
+
+    <div hidden id="assignmentDiv" class="row">
+        <div><br /></div>
+        <form id="newAssignment">
+
+
+            <div class="form-group col-xs-12 col-md-3">
+                <label>Assignment Type</label>
+                <select id="assignmentType" name="assignmentType" required class="form-control">
+                    <option value="HomeWork">HomeWork</option>
+                    <option value="Laboratory">Laboratory</option>
+                </select>
+            </div>
+
+            <div class="form-group col-xs-12 col-md-3">
+                <label>Assignment Name</label>
+                <input id="assName" name="assName" required type="text" value="" class="form-control" />
+            </div>
+            <div class="form-group col-xs-5 col-md-3">
+                <label>&nbsp;</label>
+                <button class="btn btn-primary form-control" id="new-assignment-btn">Add</button>
+            </div>
+
+
+        </form>
+
+    </div>
+</div>
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var cId=@Model;
+            var vm = {};
+            studentvm = {};
+            $.ajax({
+                url: "/api/courses/" + cId,
+                method: "get",
+                success: function (course, status, xhr) {
+                    vm.id = course.id;
+                    vm.name = course.name;
+                    vm.year = course.year;
+                    vm.semester = course.semester;
+                    $("#courseName").text(vm.name + " , " + vm.semester +" - " +vm.year);
+                },
+                async:false
+            })
+
+            //$("#enrollBtn").click(function () {
+            //    $("#enrollDiv").slideToggle();
+            //    $("#toggle").toggleClass("glyphicon-arrow-up").toggleClass("glyphicon-arrow-down");
+            //});
+
+            $("#assignmentBtn").click(function () {
+                $("#assignmentDiv").slideToggle();
+                $("#assignmentToggle").toggleClass("glyphicon-arrow-up").toggleClass("glyphicon-arrow-down");
+            });
+        });
+
+        var students = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id'),
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/api/students?query=%QUERY',
+                wildcard: '%QUERY'
+            }
+        });
+
+        $('#stdId').typeahead({
+            minLength: 3,
+            highlight:true
+        }, {
+            name: 'students',
+            display: 'id',
+            source: students
+            }).on("typeahead:select", function (e, student) {
+                studentvm.id = student.id;
+                studentvm.fName = student.fName;
+                studentvm.lName = student.lName;
+
+                $("#fName").val(student.fName);
+                $("#lName").val(student.lName);
+
+            });
+
+
+
+        $("#submit-student-btn").validate({
+            submitHandler: function () {
+
+                var studentCourseVm = {};
+                studentCourseVm.studentId = studentvm.id;
+                studentCourseVm.courseId = cId;
+
+
+                $.ajax({
+                    url: "/api/StudentCourses",
+                    method: "post",
+                    data: studentCourseVm
+                })
+                    .done(function () {
+                        toastr.success(studentvm.fName + " " + studentvm.lName + " Successfully Added.", "Enroll");
+
+                    })
+                    .fail(function (e, s, message) {
+
+
+                        toastr.error(message, "Error");
+                    });
+                return false;
+            }
+        });
+    </script>
+}

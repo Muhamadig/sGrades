@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sGrades.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,12 +17,6 @@ namespace sGrades.Dto
         [Key]
         [Column(Order = 0)]
         public string Id { get; set; }
-
-        //[MaxLength(9)]
-        //[MinLength(9)]
-        //[Key]
-        //[Column(Order = 1)]
-        //public string LecturerId { get; set; }
 
         [Required]
         public string FName { get; set; }
