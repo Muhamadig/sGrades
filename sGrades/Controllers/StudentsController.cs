@@ -47,13 +47,6 @@ namespace sGrades.Controllers
         public ActionResult Edit(string id)
         {
 
-            //var currUserNAme = GetUserName();
-            //var student = _context.Students.Where(s => s.LecturerId.Equals(currUserNAme)).SingleOrDefault(s => s.Id.Equals(id));
-            //if (student == null)
-            //{
-            //    return HttpNotFound();
-            //}
-
             return View("Edit",model:id);
         }
     }

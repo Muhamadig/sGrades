@@ -1,0 +1,91 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "My Courses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Courses</h2>
+<div><hr /></div>
+
+<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("New", "Courses")'">ADD New Course</button>
+<div><br /></div>
+
+<table id="courses" class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Course Name</th>
+            <th>Year</th>
+            <th>Semester</th>
+            <th>Edit/Delete</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#courses").DataTable({
+
+                responsive: true,
+                ajax: {
+                    url: "/api/courses",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+
+                        data: "name",
+                        render: function (data, type, course) {
+                            var viewName = course.name;
+                            return "<button title='Enter Course' class='btn-link  js-view' data-course-id=" + course.id + ">" + course.name+"</button>";
+                                
+                        }
+                    },
+                    {
+                        data:"year"
+                    },
+                    {
+                        data:"semester"
+                    },
+                    {
+                        width:"10%",
+                        data: "id",
+                        render: function (data) {
+                            return "<button title='Edit Course' class='btn-link js-edit' data-course-id=" + data + "><span class='glyphicon glyphicon-edit'></span></button>" +"   "+
+                                "<button title='Delete Course' class='btn-link js-delete' data-course-id=" + data + "><span class='glyphicon glyphicon-remove-circle'></span></button>";
+                        }
+                    },
+
+                ]
+
+            });
+
+            $("#courses").on("click", ".js-edit", function () {
+                var button = $(this);
+                location = "/courses/edit/" + button.attr("data-course-id");
+            });
+
+
+            $("#courses").on("click", ".js-delete",function () {
+
+                var button = $(this);
+                bootbox.confirm("Are you sure you want delete this course?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/courses/" + button.attr("data-course-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+
+            });
+        });
+    </script>
+
+
+}

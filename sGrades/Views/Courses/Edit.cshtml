@@ -1,0 +1,88 @@
+﻿@model int
+@{
+    ViewBag.Title = "Edit Course";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Course</h2>
+
+<div class="row">
+    <form id="editCourse">
+        <div class="col-md-5 col-sm-5">
+            <div class="form-group">
+                <label>Course Name</label>
+                <input id="name" name="name" required type="text" value="" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Year</label>
+                <input id="year" name="year" required type="number" min="2017" value="" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label>Semester</label>
+                <select id="semester" name="semester" required class="form-control">
+                    <option value="Fall">Fall</option>
+                    <option value="Spring">Spring</option>
+                    <option value="Summer">Summer</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" id="btn">Save</button>
+
+
+
+
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(document).ready(function () {
+            var id = @Model;
+            $.ajax({
+                url: "/api/courses/"+ id,
+                method: "get",
+                success: function (course, status, xhr) {
+                    $("#name").val(course.name);
+                    $("#year").val(course.year);
+                    $("#semester").val(course.semester);
+
+
+                }
+            })
+
+            $("#editCourse").validate({
+                submitHandler: function () {
+
+                    var vm = {};
+                    vm.name = $('#name').val();
+                    vm.year = $('#year').val();
+                    vm.semester = $('#semester').val();
+
+
+                    $.ajax({
+                        url: "/api/courses/" + id,
+                        method: "put",
+                        data: vm
+                    })
+                        .done(function () {
+                            toastr.success(vm.name + "," + vm.semester +"-"+vm.year + " Successfully Changes.", "Changes Saved");
+
+                            location = "/courses/index";
+                        })
+                        .fail(function (e, s, message) {
+
+
+                            toastr.error(message, "Error");
+                        });
+                    return false;
+                }
+            });
+        });
+    </script>
+}

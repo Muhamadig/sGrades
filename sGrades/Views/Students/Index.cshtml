@@ -5,21 +5,20 @@
 }
 
 <h2>My Students</h2>
-<div><br /></div>
+<div><hr /></div>
 
 
 
 <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Add", "Students")'">ADD STUDENTS</button>
 <div><br /></div>
 
-<table id="students" class="table table-bordered table-hover">
+<table id="students" class="table table-bordered table-hover table-striped">
     <thead>
         <tr>
             <th>Student ID</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>Delete</th>
-            <th>Edit</th>
+            <th>Edit/Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -31,7 +30,6 @@
     <script>
 
         $(document).ready(function () {
-
             var table = $("#students").DataTable({
 
                 responsive: true,
@@ -43,9 +41,6 @@
                     {
 
                         data: "id",
-                        //render: function (data, type, student) {
-                        //    return "<a href='/students/New/" + student.id + "'>" + student.id + "</a>";
-                        //}
                     },
                     {
                         data:"fName"
@@ -54,25 +49,22 @@
                         data:"lName"
                     },
                     {
-
+                        width:"10%",
                         data: "id",
                         render: function (data) {
-                            return "<button class='btn-link js-delete' data-student-id=" + data + ">Delete Student</button>";
+                            return "<button title='Edit Student Name' class='btn-link js-edit' data-student-id=" + data + "><span class='glyphicon glyphicon-edit'></span></button>" +"   "+
+                                "<button title='Delete Student' class='btn-link js-delete' data-student-id=" + data + "><span class='glyphicon glyphicon-remove-circle'></span></button>";
                         }
                     },
-                    {
-
-                        data: "id",
-                        render: function (data, type, student) {
-                            return "<a href='/students/Edit/" + data + "'>" + "Edit Student" + "</a>";
-                        }
-                        
-                    }
+                    
                 ]
 
             });
 
-
+            $("#students").on("click", ".js-edit", function () {
+                var button = $(this);
+                location = "/students/edit/" + button.attr("data-student-id");
+            });
 
 
             $("#students").on("click", ".js-delete",function () {
