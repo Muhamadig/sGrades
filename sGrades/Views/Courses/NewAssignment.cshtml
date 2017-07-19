@@ -1,0 +1,69 @@
+﻿@model int
+@{
+    ViewBag.Title = "New Assignment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Assignment</h2>
+<hr />
+<form id="newAssignment">
+    <div class="form-group">
+        <label for="assignmentType">Assignment Type</label>
+        <select id="assignmentType" name="assignmentType" required class="form-control">
+            <option value="HomeWork">HomeWork</option>
+            <option value="Laboratory">Laboratory</option>
+        </select>
+    </div>
+
+    <div class="form-group ">
+        <label for="assName">Assignment Name</label>
+        <input id="assName" name="assName" required type="text" value="" class="form-control" />
+    </div>
+        <button class="btn btn-primary" id="new-assignment-btn">Add</button>
+</form>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var cId=@Model;
+            
+
+            $("#newAssignment").validate({
+                submitHandler: function () {
+
+                    var assignment_vm = {};
+                    assignment_vm.name = $("#assName").val();
+                    assignment_vm.type = $("#assignmentType").val();
+                    assignment_vm.courseId = cId;
+
+                    $.ajax({
+                        url: "/api/assignments",
+                        method: "post",
+                        data: assignment_vm
+                    })
+                        .done(function () {
+                            toastr.success("The " + assignment_vm.type + " : " + assignment_vm.name + " was successfully added.", "Added");
+
+                            $("#assName").val("");
+                            $('#newAssignment').each(function () {
+                                this.reset();
+                            });
+
+                            location = "/courses/Details/" + cId;
+                        })
+                        .fail(function (e, s, message) {
+
+
+                            toastr.error(message, "Error");
+                            $('#newAssignment').each(function () {
+                                this.reset();
+                            });
+                        });
+                    return false;
+                }
+            });
+        });
+    </script>
+}

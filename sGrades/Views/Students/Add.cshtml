@@ -6,38 +6,36 @@
 
 <h2>Add New Students</h2>
 <h3>You can add multiple students. </h3>
-<div class="row">
+<div class="row col-md-6 col-sm-6">
     <form id="newStudent">
-        <div class="col-md-5 col-sm-5">
-            <div class="form-group">
-                <label>Student ID</label>
-                <input id="id" name="id" required data-rule-validStudentIdLength="true" data-rule-validStudentIdDigit="true" type="text" value="" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label>First Name</label>
-                <input id="fName" name="fName" required type="text" value="" class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label>Last Name</label>
-                <input id="lName" name="lName" required type="text" value="" class="form-control" />
-            </div>
-
-            <button class="btn btn-primary" id="btn">Add</button> 
-           
-
-
-
+        <div class="form-group">
+            <label>Student ID</label>
+            <input id="id" name="id" required data-rule-validStudentIdLength="true" data-rule-validStudentIdDigit="true" type="text" value="" class="form-control" />
         </div>
 
-        <div class="col-md-4 col-sm-4">
-            <div class="row">
-                <ul id="students" class="list-group"></ul>
-                
-            </div>
+        <div class="form-group">
+            <label>First Name</label>
+            <input id="fName" name="fName" required type="text" value="" class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label>Last Name</label>
+            <input id="lName" name="lName" required type="text" value="" class="form-control" />
+        </div>
+        <div class="btn-toolbar" role="toolbar">
+            <button class="btn btn-primary" id="btn">Add</button>
+            <button type="button" id="finish" class="btn btn-primary">FINISH</button>
         </div>
     </form>
+</div>
+<div class="row">
+    <div class="col-md-4 col-sm-4">
+        <br />
+        <div class="row">
+            <ul id="students" class="list-group"></ul>
+
+        </div>
+    </div>
 </div>
 
 
@@ -97,6 +95,10 @@
                         });
                     return false;
                 }
+            });
+
+            $("#finish").click(function () {
+                location = "/students/index";
             });
         });
     </script>

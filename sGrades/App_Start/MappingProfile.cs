@@ -19,6 +19,14 @@ namespace sGrades.App_Start
             Mapper.CreateMap<CourseDto, Course>();
             Mapper.CreateMap<Course, CourseDto>();
 
+            Mapper.CreateMap<CourseEnrollDto, CourseEnroll>();
+            Mapper.CreateMap<CourseEnroll, CourseEnrollDto>();
+
+            Mapper.CreateMap<AssignmentDto, Assignment>();
+            Mapper.CreateMap<Assignment, AssignmentDto>();
+
+            Mapper.CreateMap<GradeDto, Grade>();
+            Mapper.CreateMap<Grade, GradeDto>();
 
         }
 

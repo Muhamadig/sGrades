@@ -1,0 +1,141 @@
+﻿@model int
+@{
+    ViewBag.Title = "Grades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 id="courseTitle"></h2>
+<h4 id="assignmentTitle"></h4>
+<hr />
+<div class="row">
+    <div class="col-md-2 col-sm-2"></div>
+    <div class="col-md-8 col-sm-8">
+        <form id="gradesForm">
+            <table id="grades" class=" table table-bordered table-hover table-striped ">
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            
+        </form>
+    </div>
+</div>
+<button class="btn btn-primary btn-block" id="btn">Save</button>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var aId=@Model;
+            var assignment_vm = {};
+            var course_vm = {};
+            $.ajax({
+                url: "/api/assignments/" + aId,
+                method: "get",
+                success: function (assignment, status, xhr) {
+                    assignment_vm.id = assignment.id;
+                    assignment_vm.name = assignment.name;
+                    assignment_vm.type = assignment.type;
+                    assignment_vm.courseId = assignment.courseId;
+                },
+                async: false
+            });
+
+            $.ajax({
+                url: "/api/courses/" + assignment_vm.courseId,
+                method: "get",
+                success: function (course, status, xhr) {
+                    course_vm.id = course.id;
+                    course_vm.name = course.name;
+                    course_vm.year = course.year;
+                    course_vm.semester = course.semester;
+                },
+                async: false
+            });
+
+            $("#courseTitle").text(course_vm.name + " , " + course_vm.semester + " - " + course_vm.year);
+            $("#assignmentTitle").text("Assignment Grades of " + assignment_vm.type + " : " + assignment_vm.name);
+
+
+            var table = $("#grades").DataTable({
+
+                responsive: true,
+                ajax: {
+                    url: "/api/Grades/" + aId,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        //width: "20%",
+                        data: "studentId",
+
+                    },
+                    {
+                        //width: "10%",
+                        data: "studentId",
+                        render: function (data) {
+                            return "<input id=" + data + "name=" + data + "type='number' min='0' max='100' value='' class='form-control js-update' data-student-id=" + data+" />";
+                        }
+
+                    }
+                ]
+
+            });
+
+            $("#btn").on("click", function () {
+                $('#grades > tbody  > tr').each(function () {
+                    var vm = {};
+                    
+                    vm.assignmentGrade = $('#grade').val();
+                    vm.studentId = $('#grade').attr("data-student-id");
+                    vm.assignmentId = assignment_vm.id;
+
+                    console.log(vm.assignmentGrade);
+                });
+            });
+            table.find('tr').each(function (i, el) {
+                var $tds = $(this).find('td'),
+                    vm.studentId = $tds.eq(0).text(),
+                    vm.assignmentGrade = $tds.eq(1).text(),
+                    Quantity = $tds.eq(2).text();
+                // do something with productId, product, Quantity
+            });
+            
+
+            //$("#gradesForm").validate({
+            //    submitHandler: function () {
+
+            //        var vm = {};
+            //        vm.assignmentGrade = $('#grade').val();
+            //        vm.studentId = $('#grade').attr("data-student-id");
+            //        vm.assignmentId = assignment_vm.id;
+
+            //        console.log(vm.assignmentGrade);
+            //        $.ajax({
+            //            url: "/api/grades",
+            //            method: "put",
+            //            data: vm
+            //        })
+            //            .done(function () {
+
+            //                location = "/Courses/Details/" + course_vm.id;
+            //            })
+            //            .fail(function (e, s, message) {
+
+
+            //                toastr.error(message, "Error");
+            //            });
+            //        return false;
+            //    }
+            //});
+
+        });
+
+    </script>
+}

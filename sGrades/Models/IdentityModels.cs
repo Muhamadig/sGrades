@@ -22,7 +22,10 @@ namespace sGrades.Models
     {
         public DbSet<Student> Students { get; set; }
         public DbSet<Course> Courses { get; set; }
-       
+        public DbSet<CourseEnroll> CourseEnrolls { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

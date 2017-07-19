@@ -6,78 +6,61 @@
 
 <h2 id="courseName"></h2>
 <hr />
-
-
-<div>
-    <button id="enrollBtn" class="btn btn-primary " > <span id="toggle" class='glyphicon glyphicon-arrow-down'></span>   Enroll Students to Course</button>
-    
-    <div  id="enrollDiv" class="row">
-        <div><br /></div>
-        <form id="enrollStudent">
-            
-
-            <div class="form-group col-xs-12 col-md-3">
-                <label>Student ID</label>
-                <div class="tt-container">
-                    <input id="stdId" name="stdId" required data-rule-validStudentIdLength="true" data-rule-validStudentIdDigit="true" type="text" value="" class="form-control" />
-
-                </div>
-            </div>
-
-            <div class="form-group col-xs-12 col-md-3">
-                <label>First Name</label>
-                <div class="tt-container">
-                    <input readonly id="fName" name="fName" required type="text" value="" class="form-control" />
-                </div>
-            </div>
-
-            <div class="form-group col-xs-12 col-md-3">
-                <label>Last Name</label>
-                <div class="tt-container">
-                    <input readonly id="lName" name="lName" required type="text" value="" class="form-control" />
-                </div>
-            </div>
-            <div class="form-group col-xs-5 col-md-3">
-                <label>&nbsp;</label>
-                <button class="btn btn-primary form-control" id="submit-student-btn">Enroll</button>
-            </div>
-          
-
-        </form>
-
-    </div>
+<div class="btn-toolbar" role="toolbar">
+    <button type="button" class="btn btn-primary" id="enroll-btn">Enroll STUDENTS</button>
+    <button type="button" class="btn btn-primary" id="assignments-btn">Add New Assignment</button>
 </div>
+
 <hr />
-<div>
-    <button id="assignmentBtn" class="btn btn-primary "> <span id="assignmentToggle" class='glyphicon glyphicon-arrow-down'></span>   Add New Assignment</button>
-
-    <div hidden id="assignmentDiv" class="row">
-        <div><br /></div>
-        <form id="newAssignment">
-
-
-            <div class="form-group col-xs-12 col-md-3">
-                <label>Assignment Type</label>
-                <select id="assignmentType" name="assignmentType" required class="form-control">
-                    <option value="HomeWork">HomeWork</option>
-                    <option value="Laboratory">Laboratory</option>
-                </select>
-            </div>
-
-            <div class="form-group col-xs-12 col-md-3">
-                <label>Assignment Name</label>
-                <input id="assName" name="assName" required type="text" value="" class="form-control" />
-            </div>
-            <div class="form-group col-xs-5 col-md-3">
-                <label>&nbsp;</label>
-                <button class="btn btn-primary form-control" id="new-assignment-btn">Add</button>
-            </div>
-
-
-        </form>
-
-    </div>
+<div class="btn-group btn-block" data-toggle="buttons">
+    <label class="btn btn-info active">
+        <input type="radio" name="options" id="allOption" autocomplete="on" checked> Show All
+    </label>
+    <label class="btn btn-info">
+        <input type="radio" name="options" id="assignmentsOption" autocomplete="on"> Show Course Assignments Only
+    </label>
+    <label class="btn btn-info">
+        <input type="radio" name="options" id="studentsOption" autocomplete="on"> Show Course Students Only
+    </label>
 </div>
+<div><br></div>
+
+<div id="assignments">
+    
+    <h3>The Course Assignments</h3>
+    <h4>Click the assignment name to manage students grades.</h4>
+    <br />
+    <table id="assignmentsTable" class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Assignment Name</th>
+                <th>Type</th>
+                <th>Edit\Delete</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <hr />
+</div>
+
+
+<div id="students">
+    <h3>The Course Students</h3>
+
+    <br />    
+    <table id="studentsTable" class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
 
 
 @section scripts{
@@ -87,7 +70,6 @@
         $(document).ready(function () {
             var cId=@Model;
             var vm = {};
-            studentvm = {};
             $.ajax({
                 url: "/api/courses/" + cId,
                 method: "get",
@@ -96,74 +78,151 @@
                     vm.name = course.name;
                     vm.year = course.year;
                     vm.semester = course.semester;
-                    $("#courseName").text(vm.name + " , " + vm.semester +" - " +vm.year);
+                    $("#courseName").text(vm.name + " , " + vm.semester + " - " + vm.year);
                 },
-                async:false
-            })
-
-            //$("#enrollBtn").click(function () {
-            //    $("#enrollDiv").slideToggle();
-            //    $("#toggle").toggleClass("glyphicon-arrow-up").toggleClass("glyphicon-arrow-down");
-            //});
-
-            $("#assignmentBtn").click(function () {
-                $("#assignmentDiv").slideToggle();
-                $("#assignmentToggle").toggleClass("glyphicon-arrow-up").toggleClass("glyphicon-arrow-down");
-            });
-        });
-
-        var students = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            remote: {
-                url: '/api/students?query=%QUERY',
-                wildcard: '%QUERY'
-            }
-        });
-
-        $('#stdId').typeahead({
-            minLength: 3,
-            highlight:true
-        }, {
-            name: 'students',
-            display: 'id',
-            source: students
-            }).on("typeahead:select", function (e, student) {
-                studentvm.id = student.id;
-                studentvm.fName = student.fName;
-                studentvm.lName = student.lName;
-
-                $("#fName").val(student.fName);
-                $("#lName").val(student.lName);
-
+                async: false
             });
 
+            var students_table = $("#studentsTable").DataTable({
+
+                responsive: true,
+                ajax: {
+                    url: "/api/CourseEnrolls/" + cId,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+
+                        data: "studentId",
+                       
+                    },
+                    {
+
+                        data: "student.fName",
+
+                    },
+                    {
+
+                        data: "student.lName",
+
+                    },
+                    {
+
+                        width: "10%",
+                        data: "id",
+                        render: function (data) {
+                            return "<button title='Remove Student From The Course' class='btn-link js-remove' data-student-id=" + data + "><span class='glyphicon glyphicon-remove-circle'></span></button>";
+                        }
+
+                    },
+
+                ]
+
+            });
+
+            var assignments_table = $("#assignmentsTable").DataTable({
+
+                responsive: true,
+                ajax: {
+                    url: "/api/CourseAssignments/" + cId,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+
+                        data: "id",
+                        render: function (data, type, assignment) {
+                            return "<button title='Assignment Grades' class='btn-link  js-grades' data-assignment-id=" + data + ">" + "<span class='glyphicon glyphicon-stats'></span>" + "     "+assignment.name + "</button>";
+                        }
+                    },
+                    {
+
+                        data: "type",
+                    },
+                    {
+
+                        width: "10%",
+                        data: "id",
+                        render: function (data) {
+                            return "<button title='Edit Assignment Name' class='btn-link js-edit' data-assignment-id=" + data + "><span class='glyphicon glyphicon-edit'></span></button>" + "   " +
+                                "<button title='Delete Assignment' class='btn-link js-delete' data-assignment-id=" + data + "><span class='glyphicon glyphicon-remove-circle'></span></button>";
+                        }
+
+                    },
+
+                ]
+
+            });
+            $("#enroll-btn").click(function () {
+                location = "/courses/enroll/" + cId;
+            });
+
+            $("#assignments-btn").click(function () {
+                location = "/courses/newAssignment/" + cId;
+            });
+
+            $("#assignmentsOption").on("change", function () {
+                $("#assignments").show();
+                $("#students").hide();
+
+            });
+
+            $("#studentsOption").on("change",function () {
+                $("#assignments").hide();
+                $("#students").show();
+
+            });
+            $("#allOption").on("change", function () {
+                $("#assignments").show();
+                $("#students").show();
+
+            });
 
 
-        $("#submit-student-btn").validate({
-            submitHandler: function () {
 
-                var studentCourseVm = {};
-                studentCourseVm.studentId = studentvm.id;
-                studentCourseVm.courseId = cId;
+            $("#studentsTable").on("click", ".js-remove", function () {
 
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to remove this student from this course?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/CourseEnrolls/" + button.attr("data-student-id"),
+                            method: "DELETE",
+                            success: function () {
+                                students_table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
 
-                $.ajax({
-                    url: "/api/StudentCourses",
-                    method: "post",
-                    data: studentCourseVm
-                })
-                    .done(function () {
-                        toastr.success(studentvm.fName + " " + studentvm.lName + " Successfully Added.", "Enroll");
+            });
 
-                    })
-                    .fail(function (e, s, message) {
+            $("#assignmentsTable").on("click", ".js-delete", function () {
 
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this assignment?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/assignments/" + button.attr("data-assignment-id"),
+                            method: "DELETE",
+                            success: function () {
+                                assignments_table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
 
-                        toastr.error(message, "Error");
-                    });
-                return false;
-            }
+            });
+
+            $("#assignmentsTable").on("click", ".js-edit", function () {
+                var button = $(this);
+                location = "/courses/EditAssignment/" + button.attr("data-assignment-id");
+            });
+
+            $("#assignmentsTable").on("click", ".js-grades", function () {
+                var button = $(this);
+                location = "/courses/Grades/" + button.attr("data-assignment-id");
+            });
         });
     </script>
 }

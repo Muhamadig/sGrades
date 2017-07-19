@@ -1,0 +1,133 @@
+﻿@model int
+@{
+    ViewBag.Title = "Enroll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Enroll Students To Course</h2>
+<hr />
+
+
+<div class="row col-md-4 col-sm-4">
+    <form id="enrollStudent">
+            <div class="form-group">
+                <label for="stdId">Student ID</label>
+                <div class="tt-container{">
+                    <input id="stdId" placeholder="Student ID" name="stdId" required data-rule-validStudent="true" type="text" value="" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fName">First Name</label>
+                <input readonly id="fName" name="fName" type="text" value="" class="form-control" />
+            </div>
+
+            <div class="form-group ">
+                <label for="lName">Last Name</label>
+                <input readonly id="lName" name="lName" type="text" value="" class="form-control" />
+            </div>
+            <div class="btn-toolbar" role="toolbar">
+                <button class="btn btn-primary" id="submit-student-btn">Enroll</button>
+                <button type="button" id="finish" class="btn btn-primary">FINISH</button>
+            </div>
+
+    </form>
+</div>
+
+<div class="row">
+    <div class="col-md-4 col-sm-4">
+        <div class="row">
+            <ul id="students" class="list-group"></ul>
+
+        </div>
+    </div>
+</div>
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script>
+        $(document).ready(function () {
+            var cId=@Model;
+
+            var student_vm = {};
+
+
+            var students = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                remote: {
+                    url: '/api/students?query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+
+            $('#stdId').typeahead({
+                minLength: 1,
+                highlight:true
+            }, {
+                name: 'students',
+                display: 'id',
+                source: students
+                }).on("typeahead:select", function (e, student) {
+                    student_vm.id = student.id;
+                    student_vm.fName = student.fName;
+                    student_vm.lName = student.lName;
+
+                    $("#fName").val(student.fName);
+                    $("#lName").val(student.lName);
+
+                });
+
+            $.validator.addMethod("validStudent", function () {
+                return student_vm.id && student_vm.id !== 0;
+            }, "This student is not exist in your students list.");
+
+            $("#enrollStudent").validate({
+                submitHandler: function () {
+
+                    var course_enroll_vm = {};
+                    course_enroll_vm.studentId = $("#stdId").val();
+                    course_enroll_vm.courseId = cId;
+
+
+                    $.ajax({
+                        url: "/api/courseEnrolls",
+                        method: "post",
+                        data: course_enroll_vm
+                    })
+                        .done(function () {
+                            toastr.success(student_vm.fName + " " + student_vm.lName + " Successfully added.", "Added");
+                            $("#students").append("<li class='list-group-item list-group-item-success'>" + student_vm.id + " - " + student_vm.fName + " " + student_vm.lName + "</li>");
+
+                            $("#stdId").typeahead("val","");
+                            $("#fName").val("");
+                            $("#lName").val("");
+
+
+
+                            $("#submit-student-btn").focus();
+                            student_vm.id = 0;
+
+                        })
+                        .fail(function (e, s, message) {
+
+
+                            toastr.error(message, "Error");
+                            $("#stdId").typeahead("val", "");
+                            $("#fName").val("");
+                            $("#lName").val("");
+                            $("#submit-student-btn").focus();
+
+                        });
+                    return false;
+                }
+            });
+
+            $("#finish").click(function () {
+                location = "/courses/Details/" + cId;
+            });
+        });
+
+            
+        </script>
+    }

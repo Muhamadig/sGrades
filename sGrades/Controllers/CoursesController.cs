@@ -29,5 +29,24 @@ namespace sGrades.Controllers
             return View("Details", model: Id);
         }
 
+        public ActionResult Enroll(int Id)
+        {
+            return View("Enroll", model: Id);
+        }
+
+        public ActionResult NewAssignment(int Id)
+        {
+            return View("NewAssignment", model: Id);
+        }
+
+        public ActionResult EditAssignment(int Id)
+        {
+            return View("EditAssignment", model: Id);
+        }
+
+        public ActionResult Grades(int Id)
+        {
+            return View("Grades", model: Id);
+        }
     }
 }

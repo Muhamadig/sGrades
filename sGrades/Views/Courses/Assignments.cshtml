@@ -1,0 +1,110 @@
+﻿@model int
+@{
+    ViewBag.Title = "Assignments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 id="courseName"></h2>
+<hr />
+
+
+<hr />
+
+<table id="assignments" class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Assignments</th>
+            <th>Type</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var cId=@Model;
+            var vm = {};
+            $.ajax({
+                url: "/api/courses/" + cId,
+                method: "get",
+                success: function (course, status, xhr) {
+                    vm.id = course.id;
+                    vm.name = course.name;
+                    vm.year = course.year;
+                    vm.semester = course.semester;
+                    $("#courseName").text(vm.name + " , " + vm.semester + " - " + vm.year +" Assignments");
+                },
+                async: false
+            });
+
+
+            $("#assignmentBtn").click(function () {
+                $("#assignmentDiv").slideToggle();
+                $("#assignmentToggle").toggleClass("glyphicon-arrow-up").toggleClass("glyphicon-arrow-down");
+            });
+
+            $("#newAssignment").validate({
+                submitHandler: function () {
+
+                    var assignment_vm = {};
+                    assignment_vm.name = $("#assName").val();
+                    assignment_vm.type = $("#assignmentType").val();
+                    assignment_vm.courseId = cId;
+
+                    $.ajax({
+                        url: "/api/assignments",
+                        method: "post",
+                        data: assignment_vm
+                    })
+                        .done(function () {
+                            toastr.success("The " + assignment_vm.type + " : " + assignment_vm.name + " was successfully added.", "Added");
+
+                            $("#assName").val("");
+                            $('#newAssignment').each(function () {
+                                this.reset();
+                            });
+
+                            table.push([assignment_vm.name, assignment_vm.type]);
+
+                        })
+                        .fail(function (e, s, message) {
+
+
+                            toastr.error(message, "Error");
+                            $('#newAssignment').each(function () {
+                                this.reset();
+                            });
+                        });
+                    return false;
+                }
+            });
+
+            var table = $("#assignments").DataTable({
+
+                responsive: true,
+                ajax: {
+                    url: "/api/CourseAssignments/" + cId,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+
+                        data: "id",
+                        render: function (data, type, assignment) {
+                            return "<button title='Assignment Grades' class='btn-link  js-grades' data-assignment-id=" + data + ">" + assignment.name+"</button>";
+                        }
+                    },
+                    {
+
+                        data: "type",
+                    },
+
+                ]
+
+            });
+        });
+    </script>
+}

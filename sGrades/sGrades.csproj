@@ -203,13 +203,20 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Api\AssignmentsController.cs" />
+    <Compile Include="Controllers\Api\CourseAssignmentsController.cs" />
+    <Compile Include="Controllers\Api\CourseEnrollsController.cs" />
     <Compile Include="Controllers\Api\CoursesController.cs" />
+    <Compile Include="Controllers\Api\GradesController.cs" />
     <Compile Include="Controllers\Api\StudentsController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Dtos\AssignmentDto.cs" />
     <Compile Include="Dtos\CourseDto.cs" />
+    <Compile Include="Dtos\CourseEnrollDto.cs" />
+    <Compile Include="Dtos\GradeDto.cs" />
     <Compile Include="Dtos\StudentDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -262,9 +269,32 @@
     <Compile Include="Migrations\201707171457139_restore.Designer.cs">
       <DependentUpon>201707171457139_restore.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707181151213_AddCourseEnroll.cs" />
+    <Compile Include="Migrations\201707181151213_AddCourseEnroll.Designer.cs">
+      <DependentUpon>201707181151213_AddCourseEnroll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707181527220_AddAssignment.cs" />
+    <Compile Include="Migrations\201707181527220_AddAssignment.Designer.cs">
+      <DependentUpon>201707181527220_AddAssignment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707181530213_AddAssignment1.cs" />
+    <Compile Include="Migrations\201707181530213_AddAssignment1.Designer.cs">
+      <DependentUpon>201707181530213_AddAssignment1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707181754191_AddGrade.cs" />
+    <Compile Include="Migrations\201707181754191_AddGrade.Designer.cs">
+      <DependentUpon>201707181754191_AddGrade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201707181756238_AddGrade1.cs" />
+    <Compile Include="Migrations\201707181756238_AddGrade1.Designer.cs">
+      <DependentUpon>201707181756238_AddGrade1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Assignment.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\CourseEnroll.cs" />
+    <Compile Include="Models\Grade.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Student.cs" />
@@ -526,6 +556,11 @@
     <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Courses\Edit.cshtml" />
     <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Courses\Enroll.cshtml" />
+    <Content Include="Views\Courses\Assignments.cshtml" />
+    <Content Include="Views\Courses\NewAssignment.cshtml" />
+    <Content Include="Views\Courses\EditAssignment.cshtml" />
+    <Content Include="Views\Courses\Grades.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -581,6 +616,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707171457139_restore.resx">
       <DependentUpon>201707171457139_restore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707181151213_AddCourseEnroll.resx">
+      <DependentUpon>201707181151213_AddCourseEnroll.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707181527220_AddAssignment.resx">
+      <DependentUpon>201707181527220_AddAssignment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707181530213_AddAssignment1.resx">
+      <DependentUpon>201707181530213_AddAssignment1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707181754191_AddGrade.resx">
+      <DependentUpon>201707181754191_AddGrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707181756238_AddGrade1.resx">
+      <DependentUpon>201707181756238_AddGrade1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
