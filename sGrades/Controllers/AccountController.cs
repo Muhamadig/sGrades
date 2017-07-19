@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using sGrades.Models;
+using System.Collections.Generic;
 
 namespace sGrades.Controllers
 {
@@ -79,7 +80,11 @@ namespace sGrades.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
+                
                 case SignInStatus.Success:
+                    string id = UserManager.Find(model.UserName, model.Password).Id;
+                    IList<string> roleNames = UserManager.GetRoles(id);
+                    if (roleNames.Contains("Lecturer")) return RedirectToLocal("/Courses");
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -171,8 +176,9 @@ namespace sGrades.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                   
-                       
+                    string id = UserManager.Find(model.UserName, model.Password).Id;
+                    IList<string> roleNames = UserManager.GetRoles(id);
+                    if (roleNames.Contains("Lecturer")) return RedirectToAction("Index", "Courses");
                     return RedirectToAction("Index", "Home");
                 }
                 ViewBag.Name = new SelectList(_context.Roles.ToList(), "Name", "Name");

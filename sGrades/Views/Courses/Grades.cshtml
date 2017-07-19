@@ -21,11 +21,11 @@
                 <tbody></tbody>
             </table>
 
-            
+            <button class="btn btn-primary btn-block" id="btn">Save</button>
         </form>
     </div>
 </div>
-<button class="btn btn-primary btn-block" id="btn">Save</button>
+
 
 @section scripts{
     @Scripts.Render("~/bundles/jqueryval")
@@ -80,7 +80,7 @@
                         //width: "10%",
                         data: "studentId",
                         render: function (data) {
-                            return "<input id=" + data + "name=" + data + "type='number' min='0' max='100' value='' class='form-control js-update' data-student-id=" + data+" />";
+                            return "<input id='grade' name='grade' type='number' min='0' max='100' value='' class='form-control js-update' data-student-id=" + data+" />";
                         }
 
                     }
@@ -91,7 +91,6 @@
             $("#btn").on("click", function () {
                 $('#grades > tbody  > tr').each(function () {
                     var vm = {};
-                    
                     vm.assignmentGrade = $('#grade').val();
                     vm.studentId = $('#grade').attr("data-student-id");
                     vm.assignmentId = assignment_vm.id;
@@ -99,14 +98,17 @@
                     console.log(vm.assignmentGrade);
                 });
             });
-            table.find('tr').each(function (i, el) {
-                var $tds = $(this).find('td'),
-                    vm.studentId = $tds.eq(0).text(),
-                    vm.assignmentGrade = $tds.eq(1).text(),
-                    Quantity = $tds.eq(2).text();
-                // do something with productId, product, Quantity
+
+            $('#grades > tbody  > tr').each(function () {
+
             });
-            
+//table.find('tr').each(function (i, el) {
+//                var $tds = $(this).find('td'),
+//                    vm.studentId = $tds.eq(0).text(),
+//                    product = $tds.eq(1).text(),
+//                    Quantity = $tds.eq(2).text();
+//                // do something with productId, product, Quantity
+//});
 
             //$("#gradesForm").validate({
             //    submitHandler: function () {
