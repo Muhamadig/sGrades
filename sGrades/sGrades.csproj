@@ -208,15 +208,20 @@
     <Compile Include="Controllers\Api\CourseEnrollsController.cs" />
     <Compile Include="Controllers\Api\CoursesController.cs" />
     <Compile Include="Controllers\Api\GradesController.cs" />
+    <Compile Include="Controllers\Api\StudentCoursesController.cs" />
+    <Compile Include="Controllers\Api\StudentGradesController.cs" />
     <Compile Include="Controllers\Api\StudentsController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\StudentCoursesController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Dtos\AssignmentDto.cs" />
     <Compile Include="Dtos\CourseDto.cs" />
     <Compile Include="Dtos\CourseEnrollDto.cs" />
     <Compile Include="Dtos\GradeDto.cs" />
+    <Compile Include="Dtos\GradesDto.cs" />
+    <Compile Include="Dtos\StudentCourseDto.cs" />
     <Compile Include="Dtos\StudentDto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -561,6 +566,8 @@
     <Content Include="Views\Courses\NewAssignment.cshtml" />
     <Content Include="Views\Courses\EditAssignment.cshtml" />
     <Content Include="Views\Courses\Grades.cshtml" />
+    <Content Include="Views\StudentCourses\Index.cshtml" />
+    <Content Include="Views\StudentCourses\Grades.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

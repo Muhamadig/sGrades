@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>My Courses</h2>
+
+<hr />
+
+<table id="courses" class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Course Name</th>
+            <th>Year</th>
+            <th>Semester</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+@section scripts{
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#courses").DataTable({
+
+                responsive: true,
+                ajax: {
+                    url: "/api/studentCourses",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+
+                        data: "name",
+                        render: function (data, type, course) {
+                            var viewName = course.name;
+                            return "<button title='Enter Course' class='btn-link  js-details' data-course-id=" + course.id + ">" + course.name+"</button>";
+
+                        }
+                    },
+                    {
+                        data:"year"
+                    },
+                    {
+                        data:"semester"
+                    }
+
+                ]
+
+            });
+
+           
+
+            $("#courses").on("click", ".js-details", function () {
+                var button = $(this);
+                location = "/studentCourses/Grades/" + button.attr("data-course-id");
+            });
+
+
+            
+        });
+    </script>
+
+
+}

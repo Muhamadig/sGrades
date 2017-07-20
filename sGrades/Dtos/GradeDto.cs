@@ -19,7 +19,7 @@ namespace sGrades.Dtos
 
         public Student Student { get; set; }
 
-        [Required]
+        
         
         public string LecturerId { get; set; }
 

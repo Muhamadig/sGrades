@@ -24,14 +24,21 @@
                 }
                 else
                 {
-                    @Html.ActionLink("S-Grades", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
+                    {
+                        @Html.ActionLink("S-Grades", "Index", "StudentCourses", new { area = "" }, new { @class = "navbar-brand" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("S-Grades", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                    }
                 }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Student"))
                     {
-                         <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
+                         <li>@Html.ActionLink("My Courses And Grades", "Index", "StudentCourses")</li>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Lecturer"))
                     {

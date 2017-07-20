@@ -39,24 +39,42 @@ namespace sGrades.Controllers.Api
 
         //Put /api/Grades
         [HttpPut]
-        public IHttpActionResult UpdateGrade(GradeDto gradeDto)
+        public IHttpActionResult UpdateGrade(GradesDto gradesDto)
         {
+
+            foreach (var grade in gradesDto.Grades)
+            {
+                if (grade.AssignmentGrade != null && (grade.AssignmentGrade.Value < 0 || grade.AssignmentGrade.Value > 100)) { 
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest)
+                    {
+                        ReasonPhrase = "The grade of student: "+grade.StudentId+" Is Invalid- the grade value should be at range (0,100) or empty"
+
+                    });
+                }
+            }
             if (!ModelState.IsValid)
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             }
             var currUserName = GetUserName();
-            var gradeInDb = _context.Grades.Single(g => g.LecturerId.Equals(currUserName) && g.AssignmentId==gradeDto.AssignmentId && g.StudentId.Equals(gradeDto.StudentId));
 
-            if (gradeInDb == null)
+            foreach (var grade in gradesDto.Grades)
             {
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                var gradeInDb = _context.Grades.Single(g => g.LecturerId.Equals(currUserName) && g.AssignmentId == grade.AssignmentId && g.StudentId.Equals(grade.StudentId));
+                if (gradeInDb == null)
+                {
+                    throw new HttpResponseException(HttpStatusCode.NotFound);
 
+                }
+
+                Mapper.Map(grade, gradeInDb);
+                gradeInDb.LecturerId = currUserName;
+                _context.SaveChanges();
             }
-            Mapper.Map(gradeDto, gradeInDb);
-            gradeInDb.LecturerId = currUserName;
-            _context.SaveChanges();
+
+
+            
             return Ok();
         }
 

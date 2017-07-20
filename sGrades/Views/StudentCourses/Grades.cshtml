@@ -1,0 +1,69 @@
+﻿@model int
+@{
+    ViewBag.Title = "Grades";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 id="courseName"></h2>
+<hr />
+
+<table id="assignmentsTable" class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Assignment Name</th>
+            <th>Type</th>
+            <th>Grade</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            var cId=@Model;
+            var vm = {};
+            $.ajax({
+                url: "/api/StudentCourses/" + cId,
+                method: "get",
+                success: function (course, status, xhr) {
+                    vm.id = course.id;
+                    vm.name = course.name;
+                    vm.year = course.year;
+                    vm.semester = course.semester;
+                    $("#courseName").text(vm.name + " , " + vm.semester + " - " + vm.year);
+                },
+                async: false
+            });
+
+            var table = $("#assignmentsTable").DataTable({
+
+                responsive: true,
+                ajax: {
+                    url: "/api/StudentGrades/" + cId,
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+
+                        data: "assignment.name",
+
+                    },
+                    {
+
+                        data: "assignment.type",
+
+                    },
+                    {
+
+                        data: "assignmentGrade",
+
+                    }
+
+                ]
+
+            });
+        });
+    </script>
+}
