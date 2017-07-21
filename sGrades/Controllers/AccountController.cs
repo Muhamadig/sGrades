@@ -78,13 +78,14 @@ namespace sGrades.Controllers
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+            
             switch (result)
             {
-                
                 case SignInStatus.Success:
                     string id = UserManager.Find(model.UserName, model.Password).Id;
                     IList<string> roleNames = UserManager.GetRoles(id);
                     if (roleNames.Contains("Lecturer")) return RedirectToLocal("/Courses");
+                    if (roleNames.Contains("Student")) return RedirectToLocal("/StudentCourses");
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -92,7 +93,8 @@ namespace sGrades.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    
+                    ModelState.AddModelError("", "Invalid login attempt, the id or password are incorrect.");
                     return View(model);
             }
         }
@@ -179,6 +181,8 @@ namespace sGrades.Controllers
                     string id = UserManager.Find(model.UserName, model.Password).Id;
                     IList<string> roleNames = UserManager.GetRoles(id);
                     if (roleNames.Contains("Lecturer")) return RedirectToAction("Index", "Courses");
+                    if (roleNames.Contains("Student")) return RedirectToAction("Index", "StudentCourses");
+
                     return RedirectToAction("Index", "Home");
                 }
                 ViewBag.Name = new SelectList(_context.Roles.ToList(), "Name", "Name");

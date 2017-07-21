@@ -79,14 +79,11 @@
                             toastr.success(vm.fName + " " + vm.lName + " Successfully added.","Added");
 
                             $("#students").append("<li class='list-group-item list-group-item-success'>" + vm.id + " - " + vm.fName + " " + vm.lName + "</li>");
-
-                            $("#id").val("");
-                            $("#fName").val("");
-                            $("#lName").val("");
-
-                          
-                           
+                                                     
                             $("#btn").focus();
+                            $('#newStudent').each(function () {
+                                this.reset();
+                            });
                         })
                         .fail(function (e, s, message) {
 

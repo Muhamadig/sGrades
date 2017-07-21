@@ -62,8 +62,9 @@
             });
 
             $('#stdId').typeahead({
-                minLength: 1,
-                highlight:true
+                minLength: 0,
+                highlight: true,
+                fitToElement:true
             }, {
                 name: 'students',
                 display: 'id',
@@ -107,6 +108,9 @@
 
                             $("#submit-student-btn").focus();
                             student_vm.id = 0;
+                            $('#enrollStudent').each(function () {
+                                this.reset();
+                            });
 
                         })
                         .fail(function (e, s, message) {

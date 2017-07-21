@@ -70,7 +70,7 @@ namespace sGrades.Controllers.Api
             {
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest)
                 {
-                    ReasonPhrase = "This Student Already Enrolled To The Course"
+                    ReasonPhrase = "This Student Already Enrolled To This Course"
 
                 });
             }

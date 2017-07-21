@@ -34,7 +34,6 @@ namespace sGrades.Controllers
 
         public ActionResult Index()
         {
-
             
             return View();
         }

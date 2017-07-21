@@ -4,47 +4,78 @@
 }
 
 <h2>@ViewBag.Title.</h2>
+<div class="row">
+    <div class="col-md-8">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <h4>Create a new account.</h4>
+            <hr />
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new {role = "form" }))
-{
-    @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
-    <hr />
-    @Html.ValidationSummary("", new { @class = "text-danger" })
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+
+            
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.UserName)
+
+
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Password)
+
+
+            </div>
+
+
+             <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword)
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+
+
+                </div>
+
+             <div class="form-group">
+                    @Html.Label("User Role")
+                    @Html.DropDownListFor(m => m.UserRoles, (SelectList)ViewBag.Name, "User Role", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserRoles)
+
    
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email)
-        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+             </div>
+
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Register" />
+            </div>
+
+
+        }
+
     </div>
+    <div class="col-md-4">
+        <h4>User Role</h4>
+        <hr />
+        <ul>
+            <li>Lecturer: to manage your students grades and your courses assignments.</li>
+            <br />
+            <li>Student: to view your courses assignments grades.</li>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.UserName)
-        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+        </ul>
     </div>
+</div>
 
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.Password)
-        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-    </div>
-
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword)
-        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.Label("User Role")
-        @*@Html.DropDownList("Name")*@
-        @Html.DropDownListFor(m=>m.UserRoles, (SelectList)ViewBag.Name, "User Role", new { @class = "form-control" })
-    </div>
-
-
-    <div class="form-group">
-        <input type="submit" class="btn btn-default" value="Register" />
-    </div>
-}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
