@@ -31,14 +31,17 @@ namespace sGrades.Controllers.Api
 
 
         //Get: /api/students
-        public IHttpActionResult GetStudents(string query=null)
+        public IHttpActionResult GetStudents(string query=null,int cId=0)
         {
             var currUserName = GetUserName();
+            var studentsInCourse = _context.CourseEnrolls.Where(c => c.CourseId == cId).Select(c=>c.StudentId);
             var studentQuery = _context.Students.Where(s => s.LecturerId.Equals(currUserName));
             if (!String.IsNullOrWhiteSpace(query))
                 studentQuery = studentQuery.Where(c => c.Id.Contains(query));
 
-            var studentDtos=studentQuery
+            studentQuery = studentQuery.Where(c => !studentsInCourse.Contains(c.Id));
+
+            var studentDtos =studentQuery
                 .ToList().Select(Mapper.Map<Student,StudentDto>);
 
             return Ok(studentDtos);

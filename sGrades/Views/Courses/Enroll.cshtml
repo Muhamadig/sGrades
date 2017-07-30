@@ -5,6 +5,7 @@
 }
 
 <h2>Enroll Students To Course</h2>
+<h3>You can enroll students that only exists on your students list ,you can enroll multiple students at once.</h3>
 <hr />
 
 
@@ -56,19 +57,21 @@
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
                 remote: {
-                    url: '/api/students?query=%QUERY',
+                    url: '/api/students?query=%QUERY&cId=' + cId,
                     wildcard: '%QUERY'
+                    
                 }
             });
 
             $('#stdId').typeahead({
                 minLength: 0,
-                highlight: true,
-                fitToElement:true
+                highlight: true
+                
             }, {
                 name: 'students',
                 display: 'id',
-                source: students
+                source: students,
+                limit: 8
                 }).on("typeahead:select", function (e, student) {
                     student_vm.id = student.id;
                     student_vm.fName = student.fName;
@@ -127,6 +130,7 @@
                 }
             });
 
+           
             $("#finish").click(function () {
                 location = "/courses/Details/" + cId;
             });

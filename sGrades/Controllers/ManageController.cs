@@ -38,6 +38,10 @@ namespace sGrades.Controllers
             }
         }
 
+        [AllowAnonymous]
+        public ActionResult Redirect(){
+            return View();
+        }
         public ApplicationUserManager UserManager
         {
             get

@@ -7,6 +7,7 @@
 <h2 id="courseTitle"></h2>
 <h4 id="assignmentTitle"></h4>
 <hr />
+
 <div class="row">
     <div class="col-md-2 col-sm-2"></div>
     <div class="col-md-8 col-sm-8">
@@ -20,6 +21,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+        <h5>Please save the changes before moving to another table page or before click finish.</h5>
 
         <button class="btn btn-primary " id="btn">Save</button>
         <button class="btn btn-primary " id="finish">FINISH</button>
@@ -82,9 +84,9 @@
                         data: "studentId",
                         render: function (data, type, grade) {
                             if (grade.assignmentGrade == null)
-                                return "<input data-rule-validGrade='true' id='grade' name='grade' type='number' min='0' max='100' value='' class='form-control js-update' data-student-id=" + data + " ></input>";
+                                return "<input id='gradeFor" + data + "' name='gradeFor" + data + "' ng-model='gradeFor" + data + "' type='number' min='0' max='100' value='' class='form-control ' my-directive></input>";
 
-                            return "<input data-rule-validGrade='true' id='grade' name='grade' type='number' min='0' max='100' value='" + grade.assignmentGrade + "' class='form-control js-update' data-student-id=" + data + " ></input>";
+                            return "<input id='gradeFor" + data + "' name='gradeFor" + data + "' ng-model='gradeFor" + data + "' type='number' min='0' max='100' value='" + grade.assignmentGrade + "' class='form-control ' my-directive></input>";
                         }
 
                     }
@@ -92,10 +94,7 @@
 
             });
 
-           
-
             
-
             $("#btn").on("click", function () {
 
                

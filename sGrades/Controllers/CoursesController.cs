@@ -1,4 +1,5 @@
-﻿using System;
+﻿using sGrades.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,7 +7,8 @@ using System.Web.Mvc;
 
 namespace sGrades.Controllers
 {
-    [Authorize(Roles = "Lecturer")]
+    [RoleAuthorization(Roles = "Lecturer")]
+
     public class CoursesController : Controller
     {
         // GET: Courses

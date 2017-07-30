@@ -9,7 +9,7 @@ using System.Web.Security;
 
 namespace sGrades.Controllers
 {
-    [Authorize(Roles ="Lecturer")]
+    [RoleAuthorization(Roles ="Lecturer")]
     public class StudentsController : Controller
     {
 

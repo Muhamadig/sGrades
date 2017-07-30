@@ -17,7 +17,8 @@ namespace sGrades
                         "~/Scripts/datatables/datatables.bootstrap.js",
                         "~/Scripts/datatables/datatables.responsive.js",
                         "~/Scripts/toastr.js",
-                        "~/Scripts/typeahead.bundle.js"
+                        "~/Scripts/typeahead.bundle.js",
+                        "~/Scripts/angular.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
